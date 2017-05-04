@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class Colors
+ */
 class Colors
 {
     private $foreground_colors = [];
@@ -36,6 +39,13 @@ class Colors
     }
 
     // Returns colored string
+
+    /**
+     * @param $string
+     * @param null $foreground_color
+     * @param null $background_color
+     * @return string
+     */
     public function setColoredString($string, $foreground_color = null, $background_color = null)
     {
         $colored_string = "";
@@ -56,16 +66,77 @@ class Colors
     }
 }
 
+/**
+ * Class Common
+ */
 class Common
 {
-    public static function root($dir = '')
+    /**
+     * @param $dir
+     * @param string $extension
+     * @param array $results
+     * @return array
+     */
+    public static function getDirContents($dir, $extension = 'html', &$results = [])
     {
+        $files = scandir($dir);
 
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+
+            if (!is_dir($path)) {
+                if (empty($extension) || preg_match('/\.' . $extension . '$/', $path)) {
+                    $results[] = $path;
+                }
+            } elseif ($value != "." && $value != "..") {
+                self::getDirContents($path, $extension, $results);
+            }
+        }
+
+        return $results;
     }
 
-    public static function errorMessage($param)
+    /**
+     * @param $param
+     * @return string
+     */
+    public static function errorMissingParamMessage($param)
     {
         $colors = new Colors();
-        return $colors->setColoredString("{$param} param is empty!","light_red","black") . PHP_EOL;
+
+        return $colors->setColoredString("--{$param} param is empty!", "light_red", "black") . PHP_EOL;
+    }
+
+    /**
+     * @param $message
+     * @return string
+     */
+    public static function errorMessage($message)
+    {
+        $colors = new Colors();
+
+        return $colors->setColoredString($message, "light_red", "black") . PHP_EOL;
+    }
+
+    /**
+     * @param $message
+     * @return string
+     */
+    public static function notificationMessage($message)
+    {
+        $colors = new Colors();
+
+        return $colors->setColoredString($message, "light_blue", "black") . PHP_EOL;
+    }
+
+    public static function copyFile($source, $destination)
+    {
+        $path = pathinfo($destination);
+        if (!file_exists($path['dirname'])) {
+            mkdir($path['dirname'], 0777, true);
+        }
+        if (!copy($source, $destination)) {
+            return self::errorMessage("copy {$destination} file failed \n");
+        }
     }
 }

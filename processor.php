@@ -18,24 +18,24 @@ if (in_array('help', $argv)) {
     $options  = getopt("", $longOpts);
 
     if (!isset($options['dst']) || !isset($options['src'])) {
-        echo isset($options['dst']) ? : Common::errorMissingParamMessage('dst');
-        echo isset($options['src']) ? : Common::errorMissingParamMessage('src');
+        echo isset($options['dst']) ? : Main::errorMissingParamMessage('dst');
+        echo isset($options['src']) ? : Main::errorMissingParamMessage('src');
     } else {
         $currentDir     = getcwd() . DIRECTORY_SEPARATOR;
         $sourceDir      = "{$currentDir}{$options['src']}";
         $destinationDir = "{$currentDir}{$options['dst']}";
 
-        $files = Common::getDirContents($sourceDir);
+        $files = Main::getDirContents($sourceDir);
 
-        foreach ($files as $file) {
-            echo Common::notificationMessage($file);
-            $newFile = str_replace($sourceDir, $destinationDir, $file);
+        foreach ($files as $filePath) {
+            Main::notificationMessage($filePath);
+            $newFile = str_replace($sourceDir, $destinationDir, $filePath);
 
             try {
-                Common::copyFile($file, $newFile);
-                echo Common::notificationMessage("===> {$newFile}");
+                Main::copyAndManipulateFile($filePath, $newFile, "http://acme.test/", ["partner" => "widget co"]);
+                Main::notificationMessage("===> {$newFile}");
             } catch (Exception $exception) {
-                echo Common::errorMessage($exception->getMessage());
+                Main::errorMessage($exception->getMessage());
             }
         }
     }

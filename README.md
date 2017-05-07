@@ -12,8 +12,9 @@ This is the CLI command of PHP, with additional coloring the message for the CLI
 
 * Clone this repo
 * Add all html files to manipulate in `source` folder
-* Example usage :
+* Create folder `destination` and make it writable
+* Run this scrip in PHP CLI mode, and do the following shell command :
 ```
 php processor.php --src source --dst destination
 ```
-* Result folder will be in `destination` folder
+* Result will be collected in `destination` folder with the same name and extension

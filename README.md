@@ -17,4 +17,8 @@ This is the CLI command of PHP, with additional coloring the message for the CLI
 ```
 php processor.php --src source --dst destination
 ```
+>``--src : source folder``
+
+>``--dst : destination folder``
+
 * Result will be collected in `destination` folder with the same name and extension

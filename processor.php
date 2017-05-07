@@ -28,12 +28,12 @@ if (in_array('help', $argv)) {
         $files = Main::getDirContents($sourceDir);
 
         foreach ($files as $filePath) {
-            Main::notificationMessage($filePath);
+            Main::notificationMessage("SOURCE : {$filePath}");
             $newFile = str_replace($sourceDir, $destinationDir, $filePath);
 
             try {
                 Main::copyAndManipulateFile($filePath, $newFile, "http://acme.test/", ["partner" => "widget co"]);
-                Main::notificationMessage("===> {$newFile}");
+                Main::notificationMessage("DESTINATION : {$newFile}");
             } catch (Exception $exception) {
                 Main::errorMessage($exception->getMessage());
             }

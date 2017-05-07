@@ -178,7 +178,6 @@ class Main
 
             if (strpos($href, $search) !== false) {
                 $linkTransform[$i]['ori'] = $href;
-                self::notificationMessage($href);
                 parse_str(parse_url($href, PHP_URL_QUERY), $queryArray);
 
                 $queryArray = array_merge($queryArray, $queryAdd);
